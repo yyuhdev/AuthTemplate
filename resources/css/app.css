@@ -1,0 +1,159 @@
+* {
+    font-family: 'Poppins', sans-serif;
+    color: whitesmoke;
+}
+
+p {
+    margin: 0;
+}
+
+body {
+    padding: 0;
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #0a0a0a;
+}
+
+.input-form {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    align-items: center;
+    border: 1px solid #8f8f9d;
+    background-color: #2b2a33;
+    padding: 20px;
+    border-radius: 4px;
+    gap: 5px;
+}
+
+.input-pair {
+    display: flex;
+    flex-direction: column;
+}
+
+.input-pair input {
+    padding: 10px;
+    width: 200px;
+    color: whitesmoke;
+    background-color: #2b2a33;
+    border: 1px solid #8f8f9d;
+}
+
+.input-pair input::placeholder {
+    font-size: 15px;
+    font-style: italic;
+    color: gray;
+}
+
+.input-pair input:focus {
+    outline: none;
+}
+
+.input-form-actions {
+    margin-top: 20px;
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.input-form-actions button {
+    background-color: #2b2a33;
+    border: 1px solid #8f8f9d;
+    padding: 10px;
+    border-radius: 4px;
+    width: 100%;
+    transition: all 0.3s ease;
+}
+
+.input-form-actions button:hover {
+    background-color: whitesmoke;
+    color: #2b2a33;
+}
+
+.input-form-actions .text {
+    display: flex;
+    gap: 0;
+    text-align: center;
+    flex-direction: column;
+}
+
+.input-form-actions .text p {
+    margin: 0;
+}
+
+.input-form-actions .text a {
+    color: deepskyblue;
+    text-decoration: none;
+}
+
+.input-form-actions .text a:hover {
+    text-decoration: underline;
+}
+
+.alert {
+    left: 10px;
+    top: 10px;
+    position: absolute;
+    min-width: 200px;
+
+    padding: 10px;
+    border: 1px solid #8f8f9d;
+    background-color: #2b2a33;
+    border-radius: 4px;
+
+    display: none;
+
+    transform: translateX(-120%);
+    opacity: 0;
+    animation: slideIn 0.4s ease-out forwards;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(-120%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.alert .alert-top {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.alert .alert-top .alert-top-left {
+    width: 50%;
+}
+
+.alert .alert-top .alert-top-right {
+    width: 50%;
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+.alert-header {
+    color: indianred;
+}
+
+.alert-header i {
+    color: indianred;
+}
+
+.alert-text {
+    margin: 0;
+}
+
+.close-button {
+    color: #8f8f9d;
+}
+.close-button:hover {
+    cursor: pointer;
+}
