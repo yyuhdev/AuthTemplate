@@ -44,7 +44,7 @@
                             <i class="fa-solid fa-pencil icon"></i>
                             <p>Edit Profile</p>
                         </a>
-                        <a href="{{ route('auth.logout') }}" class="dropdown-button">
+                        <a href="{{ route('logout') }}" class="dropdown-button">
                             <i class="fa-solid fa-right-from-bracket icon"></i>
                             <p>Logout</p>
                         </a>
