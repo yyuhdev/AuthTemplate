@@ -71,6 +71,10 @@
         <div class="input-form-actions">
             <button onclick="login()">Login</button>
             <div class="text">
+                <p>Forgot your Password?</p>
+                <a href="{{ route('password.request')  }}">Reset here!</a>
+            </div>
+            <div class="text">
                 <p>Don't have an Account?</p>
                 <a href="{{ route('register')  }}">Registere here!</a>
             </div>

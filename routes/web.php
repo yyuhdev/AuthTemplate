@@ -11,13 +11,26 @@ Route::get('/', function () {
 Route::prefix('auth')->group(function () {
     Route::get('login', function () {
         return view('auth.login');
-    })->name('login');
+    })
+        ->name('login')
+        ->middleware('guest');
     Route::get('register', function () {
         return view('auth.register');
-    })->name('register');
+    })
+        ->name('register')
+        ->middleware('guest');
     Route::get('logout', function () {
         return view('auth.logout');
-    });
+    })
+        ->name('logout');
+
+    Route::get('/forgot-password', function () {
+        return view('auth.forgot-password');
+    })->middleware('guest')->name('password.request');
+
+    Route::get('/reset-password/{token}', function (string $token) {
+        return view('auth.reset-password', ['token' => $token]);
+    })->middleware('guest')->name('password.reset');
 
     Route::prefix('backend')->group(function () {
         Route::post('/register', [AuthController::class, 'register'])
@@ -28,6 +41,9 @@ Route::prefix('auth')->group(function () {
 
         Route::post('/logout', [AuthController::class, 'logout'])
             ->name('auth.logout');
+
+        Route::post('/update-password', [AuthController::class, 'updatePassword'])
+            ->name('auth.update-password');
     });
 });
 
@@ -49,5 +65,7 @@ Route::prefix('email')->group(function () {
         Auth::user()->sendEmailVerificationNotification();
         return "Verification link sent!";
     })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
+
+    Route::post('/forgot-password', [AuthController::class, 'resetPassword'])->middleware('guest')->name('password.email');
 });
 
