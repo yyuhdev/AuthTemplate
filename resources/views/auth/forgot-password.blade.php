@@ -11,13 +11,20 @@
                 return;
             }
 
+            setLoadingState(true);
+
             axios.post('{{ route('password.email') }}',
                 new URLSearchParams({
                     email: email,
-                })
-            )
+                }))
                 .then(data => {
-                    console.log(data)
+                    success(data.data.message);
+                })
+                .catch(error => {
+                    err(error.response.data.message);
+                })
+                .finally(() => {
+                    setLoadingState(false);
                 })
         }
 
@@ -31,6 +38,41 @@
                 errorEl.style.display = "none";
             }, 5000);
         }
+
+
+        function success(message) {
+            const errorEl = document.getElementById("success")
+            const errorText = document.getElementById("success-text")
+
+            errorText.innerText = message
+            errorEl.style.display = "block";
+            setTimeout(() => {
+                errorEl.style.display = "none";
+            }, 5000);
+        }
+
+        function closeErr() {
+            const errorEl = document.getElementById("alert");
+            errorEl.style.display = "none";
+        }
+
+        function setLoadingState(loading) {
+            const buttonEl = document.getElementById('send-button');
+            const buttonTextEl = document.getElementById('button-text');
+            const loadingSpinnerEl = document.getElementById('loading-spinner');
+
+            if (loading) {
+                buttonEl.disabled = true;
+                buttonEl.classList.add('button-loading');
+                buttonTextEl.textContent = 'Sending...';
+                loadingSpinnerEl.style.display = 'inline-block';
+            } else {
+                buttonEl.disabled = false;
+                buttonEl.classList.remove('button-loading');
+                buttonTextEl.textContent = 'Send Email';
+                loadingSpinnerEl.style.display = 'none';
+            }
+        }
     </script>
 
     <div class="alert" id="alert">
@@ -41,10 +83,24 @@
                 </p>
             </div>
             <div class="alert-top-right">
-                <i class="fa-solid fa-xmark close-button"></i>
+                <i class="fa-solid fa-xmark close-button" onclick="closeErr()"></i>
             </div>
         </div>
         <p id="alert-text" class="alert-text">There has been an issue creating your Account!</p>
+    </div>
+
+    <div class="alert" id="success">
+        <div class="alert-top">
+            <div class="alert-top-left">
+                <p class="success-header">
+                    <i class="fa-solid fa-thumbs-up"></i> Info
+                </p>
+            </div>
+            <div class="alert-top-right">
+                <i class="fa-solid fa-xmark close-button" onclick="closeErr()"></i>
+            </div>
+        </div>
+        <p id="success-text" class="alert-text">There has been an issue creating your Account!</p>
     </div>
 
     <div class="input-form">
@@ -54,7 +110,14 @@
             <input name="email" id="email" type="email" placeholder="Enter your Email...">
         </div>
         <div class="input-form-actions">
-            <button onclick="sendEmail()">Send Email</button>
+            <button id="send-button" onclick="sendEmail()">
+                <span class="loading-spinner" id="loading-spinner" style="display: none;"></span>
+                <span id="button-text">Send Email</span>
+            </button>
+            <div class="text">
+                <p>Remembered your password?</p>
+                <a href="{{ route('login') }}">Back to login</a>
+            </div>
         </div>
     </div>
 @endsection

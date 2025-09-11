@@ -23,6 +23,7 @@ Route::prefix('auth')->group(function () {
     Route::get('logout', function () {
         return view('auth.logout');
     })
+        ->middleware('auth')
         ->name('logout');
 
     Route::get('/forgot-password', function () {
@@ -52,6 +53,7 @@ Route::prefix('profile')->group(function () {
     Route::get('settings', function () {
         return view('profile.account-settings');
     })
+        ->middleware('auth')
         ->name('profile.account-settings');
 
     Route::prefix('backend')->group(function () {
@@ -66,7 +68,9 @@ Route::prefix('profile')->group(function () {
 Route::prefix('email')->group(function () {
     Route::get('verify', function () {
         return view('auth.verify-email');
-    })->middleware('auth')->name('verification.notice');
+    })
+        ->middleware('auth', 'unverified')
+        ->name('verification.notice');
 
     Route::get('verify/{id}/{hash}', function (EmailVerificationRequest $request) {
         $request->fulfill();

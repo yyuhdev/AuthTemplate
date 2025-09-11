@@ -125,9 +125,16 @@ class AuthController extends Controller
             }
         );
 
-        return $status === Password::PasswordReset
-            ? redirect()->route('login')->with('status', __($status))
-            : back()->withErrors(['email' => [__($status)]]);
+
+        return $status === Password::PASSWORD_RESET
+            ? response()->json([
+                'success' => true,
+                'message' => "Password reset successfully.",
+            ], 200)
+            : response()->json([
+                'success' => false,
+                'message' => "Invalid Session. Request a new Link",
+            ], 500);
     }
 
     public function updatePasswordWithoutToken(Request $request) {

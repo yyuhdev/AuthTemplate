@@ -57,6 +57,11 @@
                 errorEl.style.display = "none";
             }, 5000);
         }
+
+        function closeErr() {
+            const errorEl = document.getElementById("alert");
+            errorEl.style.display = "none";
+        }
     </script>
 
     <div class="alert" id="alert">
@@ -67,7 +72,7 @@
                 </p>
             </div>
             <div class="alert-top-right">
-                <i class="fa-solid fa-xmark close-button"></i>
+                <i class="fa-solid fa-xmark close-button" onclick="closeErr()"></i>
             </div>
         </div>
         <p id="alert-text" class="alert-text">There has been an issue creating your Account!</p>
