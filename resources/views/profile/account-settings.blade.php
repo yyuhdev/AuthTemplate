@@ -1,4 +1,4 @@
-@extends('template.default')
+@extends('template.auth')
 
 @section('content')
     <script>
@@ -10,7 +10,7 @@
             const password = passwordEl.value;
 
             const emailEl = document.getElementById('email');
-            const email =  emailEl.value;
+            const email = emailEl.value;
 
             axios.post('{{ route('profile.update-username') }}',
                 new URLSearchParams({

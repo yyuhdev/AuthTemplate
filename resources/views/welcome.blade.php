@@ -1,21 +1,57 @@
 @extends('template.default')
 
 @section('content')
-    <h2 style="font-weight: normal">Logged in:
-        @if(Auth::user())
-            <span style="color: lawngreen">True</span>
-        @else
-            <span style="color: red">False</span>
-        @endif
-    </h2>
-    @if(Auth::user())
-        <h2 style="font-weight: normal">Verified Email:
-            @if(Auth::user()->hasVerifiedEmail())
-                <span style="color: lawngreen">True</span>
-            @else
-                <span style="color: red">False</span>
+    <script>
+        function openProfileDropdown() {
+            const dropdown = document.getElementById('profile-dropdown');
+            dropdown.style.display = 'flex';
+        }
+
+        function closeProfileDropdown() {
+            const dropdown = document.getElementById('profile-dropdown');
+            dropdown.style.display = 'none';
+        }
+
+        document.addEventListener('click', event => {
+            if (event.srcElement == null) {
+                closeProfileDropdown();
+            }
+
+            if (event.srcElement.id === 'profile-dropdown' || event.srcElement.id === 'profile-button') {
+                return;
+            }
+
+            closeProfileDropdown();
+        });
+    </script>
+    <nav class="nav">
+        <div class="nav-left">
+        </div>
+        <div class="nav-right">
+            @if(Auth::user())
+                <div class="profile">
+                    <div class="profile-header">
+                        <i class="fa-solid fa-circle-user" onclick="openProfileDropdown()" id="profile-button"></i>
+                    </div>
+
+                    <div class="profile-dropdown" id="profile-dropdown">
+                        <div class="dropdown-info">
+                            <i class="fa-solid fa-circle-user icon"></i>
+                            <p>{{ Auth::user()->name }}</p>
+                        </div>
+                        <div class="divider"></div>
+                        <a href="{{ route('profile.account-settings') }}" class="dropdown-button">
+                            <i class="fa-solid fa-pencil icon"></i>
+                            <p>Edit Profile</p>
+                        </a>
+                        <a href="{{ route('auth.logout') }}" class="dropdown-button">
+                            <i class="fa-solid fa-right-from-bracket icon"></i>
+                            <p>Logout</p>
+                        </a>
+                    </div>
+                </div>
             @endif
-        </h2>
-        <h2 style="font-weight: normal">Name: {{ Auth::user()->name }}</h2>
-    @endif
+        </div>
+    </nav>
+
 @endsection
