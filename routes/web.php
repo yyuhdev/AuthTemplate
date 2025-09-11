@@ -6,7 +6,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})
+    ->name('welcome') ;
 
 Route::prefix('auth')->group(function () {
     Route::get('login', function () {
@@ -44,6 +45,21 @@ Route::prefix('auth')->group(function () {
 
         Route::post('/update-password', [AuthController::class, 'updatePassword'])
             ->name('auth.update-password');
+    });
+});
+
+Route::prefix('profile')->group(function () {
+    Route::get('settings', function () {
+        return view('profile.account-settings');
+    })
+        ->name('profile.account-settings');
+
+    Route::prefix('backend')->group(function () {
+        Route::post('update-password', [AuthController::class, 'updatePasswordWithoutToken'])
+            ->name('profile.update-password');
+
+        Route::post('update-username', [AuthController::class, 'updateUsername'])
+            ->name('profile.update-username');
     });
 });
 

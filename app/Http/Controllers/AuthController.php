@@ -130,4 +130,53 @@ class AuthController extends Controller
             : back()->withErrors(['email' => [__($status)]]);
     }
 
+    public function updatePasswordWithoutToken(Request $request) {
+        $request->validate([
+            'current_password' => 'required|string',
+            'password' => 'required|min:8|confirmed',
+        ]);
+
+        $user = $request->user();
+
+        if (!Hash::check($request->current_password, $user->password)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Invalid Credentials',
+            ]);
+        }
+
+        $user->password = $request->password;
+        $user->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => "Your password has been updated.",
+        ]);
+    }
+
+    public function updateUsername(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email|max:255',
+            'name' => 'required|string|max:255|unique:users',
+            'password' => 'required',
+        ]);
+
+        if (!Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
+            return response()->json([
+                'success' => false,
+                'message' => "Invalid Credentials",
+            ], 403);
+        }
+
+        $user = Auth::user();
+        $user->name = $request->name;
+        $user->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => "Your username has been updated.",
+        ]);
+    }
+
 }

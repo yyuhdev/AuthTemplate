@@ -157,3 +157,8 @@ body {
 .close-button:hover {
     cursor: pointer;
 }
+
+.settings-container {
+    display: flex;
+    gap: 25px;
+}
