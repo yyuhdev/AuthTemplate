@@ -32,6 +32,10 @@ body {
     min-width: 400px;
 }
 
+.input-form.danger {
+    border: 2px solid #ef4444;
+}
+
 .input-pair {
     display: flex;
     flex-direction: column;
@@ -85,6 +89,15 @@ body {
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
+}
+
+.input-form-actions button.danger {
+    background: linear-gradient(135deg, #ef4444, #ef0808);
+}
+
+.input-form-actions button.danger:hover {
+    box-shadow: 0 10px 25px rgba(250, 52, 81, 0.25);
+    background: linear-gradient(135deg, #ef4444, #ef0808);
 }
 
 .input-form-actions button:hover {

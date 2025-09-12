@@ -48,6 +48,9 @@ Route::prefix('auth')->group(function () {
 
         Route::post('/update-password', [AuthController::class, 'updatePassword'])
             ->name('auth.update-password');
+
+        Route::post('/delete-account', [AuthController::class, 'deleteAccount'])
+            ->name('auth.delete-account');
     });
 });
 

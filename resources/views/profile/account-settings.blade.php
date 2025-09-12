@@ -70,6 +70,17 @@
             if (action === "password") {
                 updatePassword();
             }
+
+            if (action === "delete") {
+                deleteAccount();
+            }
+        }
+
+        function deleteAccount() {
+            axios.post('{{ route('auth.delete-account') }}')
+                .then(response => {
+                    location.reload();
+                })
         }
 
         function showPasswordModal(action) {
@@ -123,13 +134,6 @@
             }
         }
     </script>
-    @php
-        function censorEmail($email) {
-            [$name, $domain] = explode('@', $email);
-            $censoredName = substr($name, 0, 2) . str_repeat('*', max(strlen($name) - 2, 0));
-            return $censoredName . '@' . $domain;
-        }
-    @endphp
 
     <div class="alert" id="alert">
         <div class="alert-top">
@@ -172,6 +176,16 @@
 
             <div class="input-pair">
                 <label>Email Address</label>
+
+                @php
+                    function censorEmail($email): string
+                    {
+                        [$name, $domain] = explode('@', $email);
+                        $censoredName = substr($name, 0, 2) . str_repeat('*', max(strlen($name) - 2, 0));
+                        return $censoredName . '@' . $domain;
+                    }
+                @endphp
+
                 <input type="email" value="{{ censorEmail($user->email) }}" readonly>
             </div>
 
@@ -188,11 +202,9 @@
             </div>
 
             <div class="input-form-actions">
-                <div class="text">
-                    <p>Account Status: <span style="color: #1fe160; font-weight: 500;">Active</span></p>
-                    <p>Last Login: <span style="color: #8b5cf6;">{{ $user->last_login_at->diffForHumans() }}</span></p>
-                </div>
+                <button class="danger" onclick="showPasswordModal('delete')">Delete Account</button>
             </div>
+
         </div>
         <div class="input-form">
             <div class="input-form">
