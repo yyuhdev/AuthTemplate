@@ -1,13 +1,15 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Models\User;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
 })
-    ->name('welcome') ;
+    ->middleware('auth', 'verified')
+    ->name('welcome');
 
 Route::prefix('auth')->group(function () {
     Route::get('login', function () {
@@ -51,7 +53,7 @@ Route::prefix('auth')->group(function () {
 
 Route::prefix('profile')->group(function () {
     Route::get('settings', function () {
-        return view('profile.account-settings');
+        return view('profile.account-settings', ['user' => Auth::user()]);
     })
         ->middleware('auth')
         ->name('profile.account-settings');

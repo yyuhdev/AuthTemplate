@@ -27,10 +27,12 @@
                 return;
             }
 
-            if (password.length <= 8) {
+            if (password.length < 8) {
                 err("Your Password is too short!");
                 return;
             }
+
+            setLoadingState(true);
 
             axios.post('{{ route('auth.register') }}',
                 new URLSearchParams({
@@ -40,11 +42,14 @@
                     password_confirmation: repeatedPassword,
                 }))
                 .then(res => {
-                    console.log(res)
+                    location.href = '{{ route('welcome') }}'
                 })
                 .catch(thr => {
                     err(thr.response.data.message)
                 })
+                .finally(() => {
+                    setLoadingState(false);
+                });
         }
 
         function err(message) {
@@ -61,6 +66,24 @@
         function closeErr() {
             const errorEl = document.getElementById("alert");
             errorEl.style.display = "none";
+        }
+
+        function setLoadingState(loading) {
+            const buttonEl = document.getElementById('send-button');
+            const buttonTextEl = document.getElementById('button-text');
+            const loadingSpinnerEl = document.getElementById('loading-spinner');
+
+            if (loading) {
+                buttonEl.disabled = true;
+                buttonEl.classList.add('button-loading');
+                buttonTextEl.textContent = 'Loading...';
+                loadingSpinnerEl.style.display = 'inline-block';
+            } else {
+                buttonEl.disabled = false;
+                buttonEl.classList.remove('button-loading');
+                buttonTextEl.textContent = 'Register';
+                loadingSpinnerEl.style.display = 'none';
+            }
         }
     </script>
 
@@ -101,7 +124,10 @@
         </div>
 
         <div class="input-form-actions">
-            <button onclick="register()">Register</button>
+            <button id="send-button" onclick="register()">
+                <span class="loading-spinner" id="loading-spinner" style="display: none;"></span>
+                <span id="button-text">Register</span>
+            </button>
             <div class="text">
                 <p>Already have an Account?</p>
                 <a href="{{ route('login')  }}">Login here!</a>

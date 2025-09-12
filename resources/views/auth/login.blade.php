@@ -59,7 +59,7 @@
             if (loading) {
                 buttonEl.disabled = true;
                 buttonEl.classList.add('button-loading');
-                buttonTextEl.textContent = 'Sending...';
+                buttonTextEl.textContent = 'Loading...';
                 loadingSpinnerEl.style.display = 'inline-block';
             } else {
                 buttonEl.disabled = false;

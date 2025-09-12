@@ -17,8 +17,167 @@
 </head>
 <body>
 
-<div class="main">
-    @yield('content')
+<script>
+    function openProfileDropdown() {
+        const dropdown = document.getElementById('profile-dropdown');
+        dropdown.style.display = 'flex';
+    }
+
+    function closeProfileDropdown() {
+        const dropdown = document.getElementById('profile-dropdown');
+        dropdown.style.display = 'none';
+    }
+
+    function openNotifications() {
+        const notifications = document.getElementById('notifications');
+        const overlay = document.getElementById('overlay');
+
+        overlay.style.display = 'block';
+        notifications.style.display = 'flex';
+
+        setTimeout(() => {
+            overlay.classList.add('show');
+        }, 10);
+    }
+
+    function closeNotifications() {
+        const notifications = document.getElementById('notifications');
+        const overlay = document.getElementById('overlay');
+
+        overlay.classList.remove('show');
+        notifications.classList.add('hide');
+
+        setTimeout(() => {
+            notifications.style.display = 'none';
+            overlay.style.display = 'none';
+            notifications.classList.remove('hide');
+        }, 300);
+    }
+
+    function openNotificationsKeyframes() {
+        const notifications = document.getElementById('notifications');
+        const overlay = document.getElementById('overlay');
+
+        overlay.style.display = 'block';
+        notifications.style.display = 'flex';
+
+        overlay.classList.add('fade-in');
+        overlay.classList.remove('fade-out');
+    }
+
+    function closeNotificationsKeyframes() {
+        const notifications = document.getElementById('notifications');
+        const overlay = document.getElementById('overlay');
+
+        overlay.classList.add('fade-out');
+        overlay.classList.remove('fade-in');
+        notifications.classList.add('hide');
+
+        setTimeout(() => {
+            notifications.style.display = 'none';
+            overlay.style.display = 'none';
+            notifications.classList.remove('hide');
+            overlay.classList.remove('fade-out');
+        }, 300);
+    }
+
+
+    document.addEventListener('click', event => {
+        if (event.srcElement == null) {
+            closeProfileDropdown();
+        }
+
+        if (event.srcElement.id === 'profile-dropdown' || event.srcElement.id === 'profile-button') {
+            return;
+        }
+
+        closeProfileDropdown();
+    });
+
+</script>
+<div class="nav-container">
+    <nav class="nav">
+        <div class="nav-left">
+            <p class="app-icon">Laravel Auth Template</p>
+        </div>
+        <div class="nav-right">
+            @if(Auth::user())
+                <div class="profile">
+                    <div class="profile-header" onclick="openProfileDropdown()">
+                        <i class="fa-solid fa-circle-user" id="profile-button"></i>
+                    </div>
+
+                    <div class="profile-dropdown" id="profile-dropdown">
+                        <div class="dropdown-info">
+                            <i class="fa-solid fa-circle-user icon"></i>
+                            <p>{{ Auth::user()->name }}</p>
+                        </div>
+                        <div class="divider"></div>
+                        <a href="{{ route('profile.account-settings') }}" class="dropdown-button">
+                            <i class="fa-solid fa-pencil icon"></i>
+                            <p>Edit Profile</p>
+                        </a>
+                        <a href="{{ route('logout') }}" class="dropdown-button">
+                            <i class="fa-solid fa-right-from-bracket icon"></i>
+                            <p>Logout</p>
+                        </a>
+                    </div>
+                </div>
+            @else
+                <div class="profile">
+                    <div class="profile-header" onclick="openProfileDropdown()">
+                        <i class="fa-solid fa-circle-user" id="profile-button"></i>
+                    </div>
+
+                    <div class="profile-dropdown" id="profile-dropdown">
+                        <div class="dropdown-info">
+                            <i class="fa-solid fa-circle-user icon"></i>
+                            <p>Account</p>
+                        </div>
+                        <div class="divider"></div>
+                        <a href="{{ route('login') }}" class="dropdown-button">
+                            <i class="fa-solid fa-bed icon"></i>
+                            <p>Login</p>
+                        </a>
+                        <a href="{{ route('register') }}" class="dropdown-button">
+                            <i class="fa-solid fa-address-card icon"></i>
+                            <p>Register</p>
+                        </a>
+                    </div>
+                </div>
+            @endif
+            <div class="profile">
+                <div class="profile-header" onclick="openNotifications()">
+                    <i class="fa-regular fa-bell notifications">
+                        <p class="notification-amount">0</p>
+                    </i>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="overlay" id="overlay" onclick="closeNotifications()"></div>
+
+    <div class="notifications-side" id="notifications">
+        <i class="fa-solid fa-xmark close-button" onclick="closeNotifications()"></i>
+    </div>
+
+    <div class="layout">
+        <div class="sidebar">
+            <a href="{{ route('welcome') }}" class="button">
+                <i class="fa-regular fa-house icon"></i>
+                <div>Dashboard</div>
+            </a>
+            <a href="{{ route('welcome') }}" class="button">
+                <i class="fa-solid fa-chart-simple icon"></i>
+                <div>Statistics</div>
+            </a>
+        </div>
+
+        <div class="content">
+            @yield('content')
+        </div>
+    </div>
 </div>
 
 </body>

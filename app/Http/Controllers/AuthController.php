@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -25,6 +26,7 @@ class AuthController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'last_login_at' => Carbon::now()->toDateTimeString(),
         ]);
 
         if (!Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
@@ -69,6 +71,10 @@ class AuthController extends Controller
 
         $token = $user->createToken('auth_token')->plainTextToken;
         $user->withAccessToken($token);
+
+        $request->user()->update([
+            'last_login_at' => Carbon::now()->toDateTimeString(),
+        ]);
 
         return response()->json([
             'success' => true,

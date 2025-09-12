@@ -13,10 +13,12 @@ body {
     margin: 0;
     height: 100vh;
     background-color: #0c0c0c;
+    overflow-y: hidden;
 }
 
 .nav {
     background-color: #111111;
+    border-bottom: 1px solid #212122;
     display: flex;
     padding: 25px;
 }
@@ -26,9 +28,16 @@ body {
     width: 50%;
 }
 
+.app-icon {
+    font-size: 25px;
+    font-weight: bold;
+    color: #8b5cf6;
+}
+
 .nav .nav-right {
     display: flex;
     width: 50%;
+    gap: 10px;
     flex-direction: row-reverse;
 }
 
@@ -41,8 +50,6 @@ body {
     cursor: pointer;
 }
 
-
-
 .profile p {
 
 }
@@ -53,6 +60,11 @@ body {
     gap: 10px;
     font-size: 30px;
 }
+
+.profile .profile-header:active {
+    transform: scale(0.95);
+}
+
 
 .profile-dropdown {
     position: absolute;
@@ -92,11 +104,204 @@ body {
     gap: 10px;
 }
 
-.profile .profile-dropdown .dropdown-info .icon,
-.profile .profile-dropdown .dropdown-button .icon {
+.icon {
     color: #4f4f57;
 }
 
 .profile .profile-dropdown .dropdown-button:hover {
     background-color: #3f3f46;
+}
+
+.layout {
+    display: flex;
+    height: 100vh;
+}
+
+.sidebar {
+    width: 250px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    background-color: #111111;
+    border-right: 1px solid #212122;
+    border-top: none;
+    margin-top: -1px;
+}
+
+.sidebar .button {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.sidebar .button {
+    color: #e4e4e7;
+    text-decoration: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+}
+
+.sidebar .button a {
+    text-decoration: none;
+}
+
+.sidebar .button:hover {
+    background-color: #3f3f46;
+    border-radius: 6px;
+}
+
+.content {
+}
+
+.notifications {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    padding: 8px;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.notification-amount {
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    background: linear-gradient(135deg, #8b5cf6, #a855f7);
+    color: white;
+    font-size: 12px;
+    font-weight: 600;
+    min-width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1px;
+    border-color: #8b5cf6;
+}
+
+.notification-amount:empty,
+.notification-amount[content="0"] {
+    display: none;
+}
+
+.notification-amount.large-count {
+    font-size: 10px;
+    min-width: 22px;
+    height: 22px;
+}
+
+.notifications:active {
+    transform: scale(0.95);
+}
+
+.notifications-side {
+    display: none;
+    position: absolute;
+    background-color: #18181b;
+    border-left: 1px solid #212122;
+    width: 300px;
+    height: 100vh;
+    right: 5px;
+    margin-top: -1px;
+    top: 0;
+    padding: 20px;
+    animation: slideIn 0.3s ease forwards;
+    z-index: 100;
+}
+
+.hide {
+    animation: slideOut 0.3s ease forwards;
+}
+
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideOut {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(100%);
+    }
+}
+
+.notifications-side .notifications-header {
+    position: relative;
+}
+
+
+.close-button {
+    color: #71717a;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    font-size: 16px;
+    position: absolute;
+    right: 20px;
+    top: 20px;
+}
+
+.close-button:hover {
+    color: #e4e4e7;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.6);
+    z-index: 90;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.overlay.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.overlay.fade-in {
+    animation: fadeIn 0.3s ease forwards;
+}
+
+.overlay.fade-out {
+    animation: fadeOut 0.3s ease forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        visibility: hidden;
+    }
+    to {
+        opacity: 1;
+        visibility: visible;
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+        visibility: visible;
+    }
+    to {
+        opacity: 0;
+        visibility: hidden;
+    }
 }

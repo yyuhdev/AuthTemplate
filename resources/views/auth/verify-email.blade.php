@@ -52,7 +52,7 @@
             if (loading) {
                 buttonEl.disabled = true;
                 buttonEl.classList.add('button-loading');
-                buttonTextEl.textContent = 'Sending...';
+                buttonTextEl.textContent = 'Loading...';
                 loadingSpinnerEl.style.display = 'inline-block';
             } else {
                 buttonEl.disabled = false;
@@ -100,8 +100,8 @@
                 <span id="button-text">Verify Email</span>
             </button>
             <div class="text">
-                <p>Want to go back?</p>
-                <a href="{{ route('welcome')  }}">Return Here!</a>
+                <p>Wrong Account?</p>
+                <a href="{{ route('logout')  }}">Logout Here!</a>
             </div>
         </div>
     </div>

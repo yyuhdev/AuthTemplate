@@ -17,13 +17,17 @@
                     name: username,
                     password: password,
                     email: email,
-                }),
-            ).then(response => {
-                console.log(response);
-                location.href = '{{ route('welcome')  }}';
-            }).catch(error => {
-                err(error.response.data.message)
-            });
+                }),)
+                .then(response => {
+                    console.log(response);
+                    location.href = '{{ route('welcome')  }}';
+                })
+                .catch(error => {
+                    err(error.response.data.message)
+                })
+                .finally(() => {
+                    setLoadingState(false);
+                });
         }
 
         function updatePassword() {
@@ -41,19 +45,24 @@
                     current_password: password,
                     password: newPassword,
                     password_confirmation: rnewPassword,
+                }))
+                .then(response => {
+                    console.log(response);
+                    location.href = '{{ route('welcome')  }}';
                 })
-            ).then(response => {
-                console.log(response);
-                location.href = '{{ route('welcome')  }}';
-            }).catch(error => {
-                err(error.response.data.message)
-            });
+                .catch(error => {
+                    err(error.response.data.message)
+                })
+                .finally(() => {
+                    setLoadingState(false);
+                });
         }
 
         function updateProfile() {
             const actionEl = document.getElementById('action');
             const action = actionEl.value;
 
+            setLoadingState(true);
             if (action === "username") {
                 updateUsername();
             }
@@ -95,7 +104,32 @@
                 errorEl.style.display = "none";
             }, 5000);
         }
+
+        function setLoadingState(loading) {
+            const buttonEl = document.getElementById('send-button');
+            const buttonTextEl = document.getElementById('button-text');
+            const loadingSpinnerEl = document.getElementById('loading-spinner');
+
+            if (loading) {
+                buttonEl.disabled = true;
+                buttonEl.classList.add('button-loading');
+                buttonTextEl.textContent = 'Loading...';
+                loadingSpinnerEl.style.display = 'inline-block';
+            } else {
+                buttonEl.disabled = false;
+                buttonEl.classList.remove('button-loading');
+                buttonTextEl.textContent = 'Confirm';
+                loadingSpinnerEl.style.display = 'none';
+            }
+        }
     </script>
+    @php
+        function censorEmail($email) {
+            [$name, $domain] = explode('@', $email);
+            $censoredName = substr($name, 0, 2) . str_repeat('*', max(strlen($name) - 2, 0));
+            return $censoredName . '@' . $domain;
+        }
+    @endphp
 
     <div class="alert" id="alert">
         <div class="alert-top">
@@ -123,35 +157,68 @@
         </div>
         <input name="action" id="action" type="hidden">
         <div class="input-form-actions">
-            <button onclick="updateProfile()">Confirm</button>
+            <button id="send-button" onclick="updateProfile()">
+                <span class="loading-spinner" id="loading-spinner" style="display: none;"></span>
+                <span id="button-text">Confirm</span>
+            </button>
             <button onclick="closePasswordModal()">Back</button>
         </div>
     </div>
 
+
     <div class="settings-container" id="settings-container">
         <div class="input-form">
-            <h1>Reset Username</h1>
+            <h1>{{ $user->name }}</h1>
+
             <div class="input-pair">
-                <label for="username">Username</label>
-                <input name="username" id="username" type="text" placeholder="Enter new Username...">
+                <label>Email Address</label>
+                <input type="email" value="{{ censorEmail($user->email) }}" readonly>
             </div>
+
+            <div class="input-pair">
+                <label>Username</label>
+                <input type="text" value="{{ $user->name }}" readonly>
+            </div>
+
+            <div class="settings-container">
+                <div class="input-pair">
+                    <label>Member Since</label>
+                    <input type="text" value="{{ $user->created_at->diffForHumans() }}" readonly>
+                </div>
+            </div>
+
             <div class="input-form-actions">
-                <button onclick="showPasswordModal('username')">Update Username</button>
+                <div class="text">
+                    <p>Account Status: <span style="color: #1fe160; font-weight: 500;">Active</span></p>
+                    <p>Last Login: <span style="color: #8b5cf6;">{{ $user->last_login_at->diffForHumans() }}</span></p>
+                </div>
             </div>
         </div>
-
         <div class="input-form">
-            <h1>Change Password</h1>
-            <div class="input-pair">
-                <label for="new_password">New Password</label>
-                <input name="new_password" id="new_password" type="password" placeholder="Enter new Password...">
+            <div class="input-form">
+                <h1>Reset Username</h1>
+                <div class="input-pair">
+                    <label for="username">Username</label>
+                    <input name="username" id="username" type="text" placeholder="Enter new Username...">
+                </div>
+                <div class="input-form-actions">
+                    <button onclick="showPasswordModal('username')">Update Username</button>
+                </div>
             </div>
-            <div class="input-pair">
-                <label for="rnew_password">Repeat New Password</label>
-                <input name="rnew_password" id="rnew_password" type="password" placeholder="Repeat new Password...">
-            </div>
-            <div class="input-form-actions">
-                <button onclick="showPasswordModal('password')">Change Password</button>
+
+            <div class="input-form">
+                <h1>Change Password</h1>
+                <div class="input-pair">
+                    <label for="new_password">New Password</label>
+                    <input name="new_password" id="new_password" type="password" placeholder="Enter new Password...">
+                </div>
+                <div class="input-pair">
+                    <label for="rnew_password">Repeat New Password</label>
+                    <input name="rnew_password" id="rnew_password" type="password" placeholder="Repeat new Password...">
+                </div>
+                <div class="input-form-actions">
+                    <button onclick="showPasswordModal('password')">Change Password</button>
+                </div>
             </div>
         </div>
     </div>
