@@ -1,3 +1,12 @@
+@php use App\Models\Note; @endphp
+
+@php
+    $note = Note::firstOrCreate(
+        ['user_id' => Auth::id()],
+        ['content' => '', 'pos_x' => 100, 'pos_y' => 100, 'width' => 300, 'height' => 200]
+    );
+@endphp
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -82,6 +91,78 @@
     }
 
 
+    document.addEventListener("DOMContentLoaded", function () {
+        dragElement(document.getElementById("todo"));
+
+        const todo = document.getElementById("todo");
+
+        const textarea = todo.querySelector("textarea");
+        textarea.addEventListener("blur", () => {
+            saveNoteContent({{ Auth::user()->id }}, textarea.value);
+        });
+
+        function dragElement(elmnt) {
+            let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+            const header = document.getElementById(elmnt.id + "header") || elmnt;
+
+            header.onmousedown = dragMouseDown;
+
+            function dragMouseDown(e) {
+                e.preventDefault();
+                pos3 = e.clientX;
+                pos4 = e.clientY;
+                document.onmouseup = closeDragElement;
+                document.onmousemove = elementDrag;
+            }
+
+            function elementDrag(e) {
+                e.preventDefault();
+                pos1 = pos3 - e.clientX;
+                pos2 = pos4 - e.clientY;
+                pos3 = e.clientX;
+                pos4 = e.clientY;
+
+                let newTop = elmnt.offsetTop - pos2;
+                let newLeft = elmnt.offsetLeft - pos1;
+
+                const maxLeft = window.innerWidth - elmnt.offsetWidth;
+                const maxTop = window.innerHeight - elmnt.offsetHeight;
+
+                if (newLeft < 0) newLeft = 0;
+                if (newTop < 0) newTop = 0;
+                if (newLeft > maxLeft) newLeft = maxLeft;
+                if (newTop > maxTop) newTop = maxTop;
+
+                elmnt.style.top = newTop + "px";
+                elmnt.style.left = newLeft + "px";
+            }
+
+            function closeDragElement() {
+                document.onmouseup = null;
+                document.onmousemove = null;
+
+                saveNotePosition({{ $note->id }}, elmnt.offsetLeft, elmnt.offsetTop, elmnt.offsetWidth, elmnt.offsetHeight);
+
+            }
+        }
+    });
+
+    function saveNotePosition(id, x, y, width, height) {
+        axios.put(`/notes/${id}`, {
+            pos_x: x,
+            pos_y: y,
+            width: width,
+            height: height
+        });
+    }
+
+    function saveNoteContent(id, content) {
+        axios.put(`/notes/${id}`, {
+            text: content
+        });
+    }
+
+
     document.addEventListener('click', event => {
         if (event.srcElement == null) {
             closeProfileDropdown();
@@ -95,6 +176,13 @@
     });
 
 </script>
+
+<div id="todo" class="todo-card"
+     style="top: {{ $note->pos_y ?? 100 }}px; left: {{ $note->pos_x ?? 100 }}px;">
+    <div id="todoheader">Quick Notes</div>
+    <textarea class="text">{{ $note->text ?? '' }}</textarea>
+</div>
+
 <div class="nav-container">
     <nav class="nav">
         <div class="nav-left">
@@ -202,6 +290,9 @@
                 <i class="fa-regular fa-house icon"></i>
                 <div>Dashboard</div>
             </a>
+
+            <p class="category">Storage</p>
+            <div class="divider"></div>
             <a href="{{ route('file-upload') }}" class="button">
                 <i class="fa-solid fa-upload icon"></i>
                 <div>File Upload</div>
@@ -212,9 +303,23 @@
                 <div>Files</div>
             </a>
 
+            <p class="category">Admin</p>
+            <div class="divider"></div>
             <a href="{{ route('admin.roles') }}" class="button">
                 <i class="fa-solid fa-ruler icon"></i>
                 <div>Roles</div>
+            </a>
+
+            <a href="{{ route('admin.users') }}" class="button">
+                <i class="fa-solid fa-users icon"></i>
+                <div>Users</div>
+            </a>
+
+            <p class="category">Orga</p>
+            <div class="divider"></div>
+            <a href="{{ route('todo') }}" class="button">
+                <i class="fa-solid fa-ruler icon"></i>
+                <div>To-Do</div>
             </a>
         </div>
         <div class="content">

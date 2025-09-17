@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FileController;
+use App\Http\Controllers\NoteController;
 use App\Http\Controllers\RoleController;
 use App\Models\Role;
 use App\Models\User;
@@ -14,12 +15,36 @@ Route::get('/', function () {
     ->middleware('auth', 'verified', 'allowed')
     ->name('welcome');
 
+
+Route::get('/notes', [NoteController::class, 'index'])
+    ->name('notes.index')
+    ->middleware('auth', 'verified', 'allowed');
+Route::post('/notes', [NoteController::class, 'store'])
+    ->name('notes.store')
+    ->middleware('auth', 'verified', 'allowed');
+Route::put('/notes/{note}', [NoteController::class, 'update'])
+    ->name('notes.update')
+    ->middleware('auth', 'verified', 'allowed');
+Route::delete('/notes/{note}', [NoteController::class, 'destroy'])
+    ->name('notes.destroy')
+    ->middleware('auth', 'verified', 'allowed');
+
+Route::get('todo', function () {
+    return view('todo');
+})->name('todo');
+
 Route::prefix('admin')->group(function () {
     Route::get('roles', function () {
         return view('roles', ['roles' => Role::all(), 'users' => User::all(), 'routes' => Route::getRoutes()]);
     })
         ->middleware('auth', 'verified', 'allowed')
         ->name('admin.roles');
+
+    Route::get('users', function () {
+        return view('users', ['users' => User::all()]);
+    })
+        ->middleware('auth', 'verified', 'allowed')
+        ->name('admin.users');
 
     Route::prefix('backend')->group(function () {
         Route::get('/roles', [RoleController::class, 'index'])->name('roles.index');
