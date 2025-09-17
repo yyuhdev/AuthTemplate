@@ -1,6 +1,9 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\FileController;
+use App\Http\Controllers\RoleController;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Support\Facades\Route;
@@ -8,8 +11,45 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 })
-    ->middleware('auth', 'verified')
+    ->middleware('auth', 'verified', 'allowed')
     ->name('welcome');
+
+Route::prefix('admin')->group(function () {
+    Route::get('roles', function () {
+        return view('roles', ['roles' => Role::all(), 'users' => User::all(), 'routes' => Route::getRoutes()]);
+    })
+        ->middleware('auth', 'verified', 'allowed')
+        ->name('admin.roles');
+
+    Route::prefix('backend')->group(function () {
+        Route::get('/roles', [RoleController::class, 'index'])->name('roles.index');
+        Route::post('/roles', [RoleController::class, 'store'])->name('roles.store');
+        Route::delete('/roles/{role}', [RoleController::class, 'destroy'])->name('roles.destroy');
+    });
+});
+
+Route::get('/file-upload', function () {
+    return view('file-upload');
+})->name('file-upload')->middleware('auth', 'verified', 'allowed');
+
+Route::get('/file-list', function () {
+    return view('file-list', ['files' => \App\Models\File::all()]);
+})
+    ->middleware('auth', 'verified', 'allowed')
+    ->name('file-list');
+
+Route::post('/file-upload', [FileController::class, 'store'])->middleware('auth', 'verified', 'allowed');
+
+
+Route::get('/downloads/{filename}', function ($filename) {
+    return Storage::download("uploads/{$filename}");
+})
+    ->middleware('auth', 'verified', 'allowed')
+    ->name('file.download');
+
+Route::post('/file-delete', [FileController::class, 'destroy'])
+    ->middleware('auth', 'verified', 'allowed')
+    ->name('file.delete');
 
 Route::prefix('auth')->group(function () {
     Route::get('login', function () {

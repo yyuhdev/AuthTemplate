@@ -152,6 +152,11 @@ body {
 }
 
 .content {
+    margin: auto;
+    height: 100%;
+    width: 100%;
+    align-items: center;
+    display: flex;
 }
 
 .notifications {
@@ -172,8 +177,7 @@ body {
     right: -2px;
     background: linear-gradient(135deg, #8b5cf6, #a855f7);
     color: white;
-    font-size: 12px;
-    font-weight: 600;
+    font-size: 10px;
     min-width: 20px;
     height: 20px;
     border-radius: 50%;
@@ -204,14 +208,217 @@ body {
     position: absolute;
     background-color: #18181b;
     border-left: 1px solid #212122;
-    width: 300px;
     height: 100vh;
+    min-width: 300px;
+    max-width: 500px;
     right: 5px;
     margin-top: -1px;
     top: 0;
     padding: 20px;
+    flex-direction: column;
     animation: slideIn 0.3s ease forwards;
     z-index: 100;
+}
+
+.notifications-side .notifications-header {
+    margin: 0;
+    color: #8b5cf6;
+    display: flex;
+}
+
+.notifications-side .divider {
+    height: 1px;
+    width: 100%;
+    background-color: #27272a;
+    margin-bottom: 5px;
+}
+
+.notifications-side .notification-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.notifications-side .notification-container .notification {
+    display: flex;
+    flex-direction: column;
+    border-left: 2px solid #8b5cf6;
+    padding: 10px;
+}
+
+.notifications-side .notification-container .notification .notification-header {
+    display: flex;
+    margin: 0;
+}
+
+.notifications-side .notification-container .notification .notification-content {
+    display: flex;
+    margin: 0;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-height: 100px;
+    overflow: hidden;
+}
+
+.upload-card {
+    border: 1px solid #1f1f23;
+    background-color: #111111;
+    border-radius: 12px;
+    padding: 30px;
+    min-width: 400px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    text-align: center;
+    max-width: 500px;
+    margin: auto;
+}
+
+.upload-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #8b5cf6;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.drop-zone {
+    border: 2px dashed #888;
+    border-radius: 10px;
+    padding: 40px 20px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.drop-zone span {
+    display: block;
+    font-size: 14px;
+    color: #555;
+}
+
+.browse-link {
+    color: #8b5cf6;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.file-table-container {
+    width: 100%;
+    height: 100vh;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    color: #e4e4e7;
+    gap: 20px;
+}
+
+.file-list-title {
+    color: #8b5cf6;
+    font-size: 20px;
+    margin-bottom: 15px;
+}
+
+.search-bar {
+    margin-bottom: 15px;
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid #27272a;
+    background-color: #1a1a1d;
+    color: #e4e4e7;
+    width: 100%;
+}
+
+.file-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #1a1a1d;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.file-table th,
+.file-table td {
+    padding: 12px;
+    text-align: left;
+    font-size: 14px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.file-table th {
+    background-color: #2c2c31;
+    color: #cdd6fa;
+}
+
+.file-table tr:hover td {
+    background-color: #2c2c31;
+}
+
+.file-name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.actions {
+    display: flex;
+    gap: 8px;
+    width: 100%;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.download-btn {
+    color: #dbf341;
+    cursor: pointer;
+}
+
+.delete-btn {
+    color: #fc004a;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.file-empty {
+    text-align: center;
+    color: #71717a;
+    padding: 20px;
+}
+
+.upload-button {
+    margin-top: 20px;
+    width: 100%;
+    background: linear-gradient(135deg, #8b5cf6, #a855f7);
+    border: none; padding: 12px;
+    border-radius: 8px;
+    color: white;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.create-btn {
+    margin-top: 20px;
+    width: max-content;
+    background: linear-gradient(135deg, #8b5cf6, #a855f7);
+    border: none; padding: 12px;
+    border-radius: 8px;
+    color: white;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.upload-button:hover {
+    transform: scale(1.03);
+}
+
+.create-btn:hover {
+    transform: scale(1.03);
+}
+
+.upload-button:active {
+    transform: scale(0.95);
 }
 
 .hide {
@@ -304,4 +511,172 @@ body {
         opacity: 0;
         visibility: hidden;
     }
+}
+
+.alert {
+    left: 24px;
+    top: 24px;
+    position: absolute;
+    min-width: 320px;
+
+    padding: 20px;
+    border: 1px solid #27272a;
+    background-color: #111111;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+
+    display: none;
+
+    transform: translateX(-120%);
+    opacity: 0;
+    animation: slideInAlert 0.4s ease-out forwards;
+}
+
+@keyframes slideInAlert {
+    from {
+        transform: translateX(-120%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.alert .alert-top {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.alert .alert-top .alert-top-left {
+    width: 50%;
+}
+
+.alert .alert-top .alert-top-right {
+    width: 50%;
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+.alert-header {
+    color: #ef4444;
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.alert-header i {
+    color: #ef4444;
+}
+
+.success-header {
+    color: #1fe160;
+}
+
+.success-header i {
+    color: #1fe160;
+}
+
+.alert-text {
+    margin: 0;
+    color: #d4d4d8;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.close-button {
+    color: #71717a;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    font-size: 16px;
+}
+
+.close-button:hover {
+    color: #e4e4e7;
+}
+
+.search-bar {
+    padding: 16px 20px;
+    color: #e4e4e7;
+    background-color: #1a1a1d;
+    border: 1px solid #27272a;
+    border-radius: 12px;
+    font-size: 15px;
+    transition: all 0.2s ease;
+}
+
+.create-role-form {
+    display: none;
+    flex-direction: column;
+    gap: 12px;
+    margin: 0 auto auto;
+    padding: 20px;
+    background-color: #111111;
+    border: 1px solid #212122;
+    border-radius: 12px;
+    max-width: 500px;
+    z-index: 100;
+    position: absolute;
+    left: 0;
+    top: 25%;
+    right: 0;
+    margin-inline: auto;
+    width: fit-content;
+}
+
+.create-role-form input,
+.create-role-form select {
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid #27272a;
+    background-color: #1a1a1d;
+    color: #e4e4e7;
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
+
+.create-role-form input:focus,
+.create-role-form select:focus {
+    outline: none;
+    border-color: #8b5cf6;
+    box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.3);
+}
+
+.create-role-form label {
+    font-size: 14px;
+    color: #8b5cf6;
+    font-weight: 500;
+}
+
+.create-role-form button.create-btn {
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #8b5cf6, #a855f7);
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.create-role-form button.create-btn:hover {
+    transform: scale(1.03);
+}
+
+.create-role-form button.create-btn:active {
+    transform: scale(0.95);
+}
+
+#create_role_select {
+    width: 100%;
+}
+
+.create-role-form select[multiple] {
+    height: auto;
+    min-height: 120px;
+    overflow-y: auto;
 }

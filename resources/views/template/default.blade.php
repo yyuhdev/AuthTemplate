@@ -149,7 +149,7 @@
             <div class="profile">
                 <div class="profile-header" onclick="openNotifications()">
                     <i class="fa-regular fa-bell notifications">
-                        <p class="notification-amount">0</p>
+                        <p class="notification-amount">9+</p>
                     </i>
                 </div>
             </div>
@@ -159,7 +159,41 @@
     <div class="overlay" id="overlay" onclick="closeNotifications()"></div>
 
     <div class="notifications-side" id="notifications">
-        <i class="fa-solid fa-xmark close-button" onclick="closeNotifications()"></i>
+        <h2 class="notifications-header">Notifications</h2>
+        <i class="fa-solid fa-xmark close-button close-button" onclick="closeNotifications()"></i>
+        <div class="divider"></div>
+
+        <div class="notification-container">
+            <div class="notification">
+                <h3 class="notification-header">
+                    Example wowww
+                </h3>
+                <div class="notification-content">
+                    Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut
+                    labore et dolore magna aliquyam erat, sed diam voluptua.
+                </div>
+            </div>
+
+            <div class="notification">
+                <h3 class="notification-header">
+                    Example wowww
+                </h3>
+                <div class="notification-content">
+                    Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut
+                    labore et dolore magna aliquyam erat, sed diam voluptua.
+                </div>
+            </div>
+
+            <div class="notification">
+                <h3 class="notification-header">
+                    Example wowww
+                </h3>
+                <div class="notification-content">
+                    Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut
+                    labore et dolore magna aliquyam erat, sed diam voluptua.
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="layout">
@@ -168,12 +202,21 @@
                 <i class="fa-regular fa-house icon"></i>
                 <div>Dashboard</div>
             </a>
-            <a href="{{ route('welcome') }}" class="button">
-                <i class="fa-solid fa-chart-simple icon"></i>
-                <div>Statistics</div>
+            <a href="{{ route('file-upload') }}" class="button">
+                <i class="fa-solid fa-upload icon"></i>
+                <div>File Upload</div>
+            </a>
+
+            <a href="{{ route('file-list') }}" class="button">
+                <i class="fa-solid fa-file-zipper icon"></i>
+                <div>Files</div>
+            </a>
+
+            <a href="{{ route('admin.roles') }}" class="button">
+                <i class="fa-solid fa-ruler icon"></i>
+                <div>Roles</div>
             </a>
         </div>
-
         <div class="content">
             @yield('content')
         </div>
